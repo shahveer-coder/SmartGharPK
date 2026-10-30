@@ -52,7 +52,7 @@
 
 /* ---------- Reset ---------- */
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:90px}
 body{
   margin:0;font-family:var(--f-body);color:var(--text);background:var(--white);
   font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;
@@ -933,6 +933,10 @@ input[type=range]{width:100%;accent-color:var(--green);margin-top:6px}
 }
 @media (min-width:1280px){
   .hero__sphere{width:480px}
+}
+@media (max-width:1023px){
+  /* keep the sticky bottom navbar from covering page footers (storefront only) */
+  body:not(.admin-body){padding-bottom:calc(58px + env(safe-area-inset-bottom))}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}

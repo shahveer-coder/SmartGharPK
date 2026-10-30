@@ -1,6 +1,9 @@
 User-agent: *
 Allow: /
+
+# Private — never indexed
 Disallow: /admin-dashboard.html
 Disallow: /admin-login.html
+Disallow: /checkout.html
 
-Sitemap: /sitemap.xml
+Sitemap: https://smart-ghar-pk.vercel.app/sitemap.xml

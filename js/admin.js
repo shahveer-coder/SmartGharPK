@@ -153,6 +153,12 @@
 
   /* ---------------- Helpers ---------------- */
   function el(sel) { return document.querySelector(sel); }
+  /** Safe form-control lookup (avoids relying on named-property access) */
+  function ctrl(form, name) {
+    return form ? form.querySelector('[name="' + name + '"]') : null;
+  }
+  function val(form, name) { var c = ctrl(form, name); return c ? c.value : ''; }
+  function checked(form, name) { var c = ctrl(form, name); return c ? !!c.checked : false; }
   function statusChip(s) {
     var labels = { pending: '🟡 Pending', confirmed: '🔵 Confirmed', packed: '🟣 Packed', shipped: '🟠 Shipped', delivered: '🟢 Delivered', cancelled: '🔴 Cancelled' };
     return '<span class="status-chip st-' + U.esc(s) + '">' + (labels[s] || s) + '</span>';
@@ -499,30 +505,31 @@
     el('[data-product-modal-title]').textContent = p ? 'Edit product' : 'Add product';
     form.dataset.id = id || '';
 
+    var put = function (name, v) { var c = ctrl(form, name); if (c) c.value = v; };
     if (p) {
-      form.title.value = p.title || '';
-      form.category.value = p.category || '';
-      form.stock_quantity.value = p.stock_quantity || 0;
-      form.original_price.value = p.original_price || '';
-      form.sale_price.value = p.sale_price != null ? p.sale_price : '';
-      form.rating.value = p.rating || 4.5;
-      form.review_count.value = p.review_count || 0;
-      form.short_description.value = p.short_description || '';
-      form.full_description.value = p.full_description || '';
-      form.image_url.value = p.image_url || '';
-      form.image_gallery.value = (p.image_gallery || []).join(', ');
-      form.key_features.value = (p.key_features || []).join('\n');
-      form.is_featured.checked = !!p.is_featured;
-      form.is_active.checked = !!p.is_active;
+      put('title', p.title || '');
+      put('category', p.category || '');
+      put('stock_quantity', p.stock_quantity || 0);
+      put('original_price', p.original_price || '');
+      put('sale_price', p.sale_price != null ? p.sale_price : '');
+      put('rating', p.rating || 4.5);
+      put('review_count', p.review_count || 0);
+      put('short_description', p.short_description || '');
+      put('full_description', p.full_description || '');
+      put('image_url', p.image_url || '');
+      put('image_gallery', (p.image_gallery || []).join(', '));
+      put('key_features', (p.key_features || []).join('\n'));
+      if (ctrl(form, 'is_featured')) ctrl(form, 'is_featured').checked = !!p.is_featured;
+      if (ctrl(form, 'is_active')) ctrl(form, 'is_active').checked = !!p.is_active;
       var tags = p.tags || [];
-      form.tag_hot_deal.checked = tags.indexOf('hot_deal') !== -1;
-      form.tag_new.checked = tags.indexOf('new') !== -1;
-      form.tag_best_seller.checked = tags.indexOf('best_seller') !== -1;
-      form.tag_limited.checked = tags.indexOf('limited') !== -1;
+      if (ctrl(form, 'tag_hot_deal')) ctrl(form, 'tag_hot_deal').checked = tags.indexOf('hot_deal') !== -1;
+      if (ctrl(form, 'tag_new')) ctrl(form, 'tag_new').checked = tags.indexOf('new') !== -1;
+      if (ctrl(form, 'tag_best_seller')) ctrl(form, 'tag_best_seller').checked = tags.indexOf('best_seller') !== -1;
+      if (ctrl(form, 'tag_limited')) ctrl(form, 'tag_limited').checked = tags.indexOf('limited') !== -1;
     } else {
-      form.is_active.checked = true;
-      form.rating.value = 4.5;
-      form.stock_quantity.value = 10;
+      if (ctrl(form, 'is_active')) ctrl(form, 'is_active').checked = true;
+      put('rating', 4.5);
+      put('stock_quantity', 10);
     }
     openModal('productModal');
   }
@@ -534,24 +541,24 @@
     var f = e.target;
     var tags = [];
     ['hot_deal', 'new', 'best_seller', 'limited'].forEach(function (t) {
-      if (f['tag_' + t].checked) tags.push(t);
+      if (checked(f, 'tag_' + t)) tags.push(t);
     });
     var payload = {
-      title: f.title.value.trim(),
-      category: f.category.value,
-      stock_quantity: Number(f.stock_quantity.value) || 0,
-      original_price: Number(f.original_price.value) || 0,
-      sale_price: f.sale_price.value ? Number(f.sale_price.value) : null,
-      rating: Math.min(5, Number(f.rating.value) || 4.5),
-      review_count: Number(f.review_count.value) || 0,
-      short_description: f.short_description.value.trim(),
-      full_description: f.full_description.value.trim(),
-      image_url: f.image_url.value.trim(),
-      image_gallery: f.image_gallery.value.split(',').map(function (s) { return s.trim(); }).filter(Boolean),
-      key_features: f.key_features.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean),
+      title: val(f, 'title').trim(),
+      category: val(f, 'category'),
+      stock_quantity: Number(val(f, 'stock_quantity')) || 0,
+      original_price: Number(val(f, 'original_price')) || 0,
+      sale_price: val(f, 'sale_price') ? Number(val(f, 'sale_price')) : null,
+      rating: Math.min(5, Number(val(f, 'rating')) || 4.5),
+      review_count: Number(val(f, 'review_count')) || 0,
+      short_description: val(f, 'short_description').trim(),
+      full_description: val(f, 'full_description').trim(),
+      image_url: val(f, 'image_url').trim(),
+      image_gallery: val(f, 'image_gallery').split(',').map(function (x) { return x.trim(); }).filter(Boolean),
+      key_features: val(f, 'key_features').split('\n').map(function (x) { return x.trim(); }).filter(Boolean),
       tags: tags,
-      is_featured: f.is_featured.checked,
-      is_active: f.is_active.checked
+      is_featured: checked(f, 'is_featured'),
+      is_active: checked(f, 'is_active')
     };
     if (!payload.title || !payload.image_url) { SG.toast('Title and image URL are required', 'error'); return; }
 
@@ -658,15 +665,16 @@
     var c = id ? state.categories.find(function (x) { return x.id === id; }) : null;
     el('[data-cat-modal-title]').textContent = c ? 'Edit category' : 'Add category';
     form.dataset.id = id || '';
+    var put = function (name, v) { var el2 = ctrl(form, name); if (el2) el2.value = v; };
     if (c) {
-      form.name.value = c.name;
-      form.slug.value = c.slug;
-      form.icon.value = c.icon || '🛍️';
-      form.image_url.value = c.image_url || '';
-      form.description.value = c.description || '';
-      form.is_active.checked = c.is_active !== false;
-    } else {
-      form.is_active.checked = true;
+      put('name', c.name);
+      put('slug', c.slug);
+      put('icon', c.icon || '🛍️');
+      put('image_url', c.image_url || '');
+      put('description', c.description || '');
+      if (ctrl(form, 'is_active')) ctrl(form, 'is_active').checked = c.is_active !== false;
+    } else if (ctrl(form, 'is_active')) {
+      ctrl(form, 'is_active').checked = true;
     }
     openModal('categoryModal');
   }
@@ -675,12 +683,12 @@
     e.preventDefault();
     var f = e.target;
     var payload = {
-      name: f.name.value.trim(),
-      slug: f.slug.value.trim().toLowerCase().replace(/\s+/g, '-'),
-      icon: f.icon.value,
-      image_url: f.image_url.value.trim() || null,
-      description: f.description.value.trim(),
-      is_active: f.is_active.checked
+      name: val(f, 'name').trim(),
+      slug: val(f, 'slug').trim().toLowerCase().replace(/\s+/g, '-'),
+      icon: val(f, 'icon'),
+      image_url: val(f, 'image_url').trim() || null,
+      description: val(f, 'description').trim(),
+      is_active: checked(f, 'is_active')
     };
     if (!payload.name || !payload.slug) { SG.toast('Name and slug are required', 'error'); return; }
     var res = f.dataset.id
@@ -714,24 +722,24 @@
   document.querySelector('[data-coupon-form]').addEventListener('submit', async function (e) {
     e.preventDefault();
     var f = e.target;
-    var type = f.discount_type.value;
+    var type = val(f, 'discount_type');
     var payload = {
-      code: f.code.value.trim().toUpperCase(),
+      code: val(f, 'code').trim().toUpperCase(),
       discount_type: type,
-      discount_value: type === 'free_shipping' ? 0 : Number(f.discount_value.value) || 0,
-      min_order_amount: Number(f.min_order_amount.value) || 0,
-      max_discount_cap: f.max_discount_cap.value ? Number(f.max_discount_cap.value) : null,
-      usage_limit: f.usage_limit.value ? Number(f.usage_limit.value) : null,
-      valid_from: f.valid_from.value || null,
-      valid_till: f.valid_till.value || null,
-      is_active: f.is_active.checked
+      discount_value: type === 'free_shipping' ? 0 : Number(val(f, 'discount_value')) || 0,
+      min_order_amount: Number(val(f, 'min_order_amount')) || 0,
+      max_discount_cap: val(f, 'max_discount_cap') ? Number(val(f, 'max_discount_cap')) : null,
+      usage_limit: val(f, 'usage_limit') ? Number(val(f, 'usage_limit')) : null,
+      valid_from: val(f, 'valid_from') || null,
+      valid_till: val(f, 'valid_till') || null,
+      is_active: checked(f, 'is_active')
     };
     if (!payload.code) { SG.toast('Coupon code is required', 'error'); return; }
     var res = await sb.from('coupons').insert(payload);
     if (res.error) { SG.toast('Could not create coupon: ' + res.error.message, 'error'); return; }
     SG.toast('Coupon ' + payload.code + ' created', 'success');
     f.reset();
-    f.is_active.checked = true;
+    if (ctrl(f, 'is_active')) ctrl(f, 'is_active').checked = true;
     loadAll();
   });
 
@@ -813,7 +821,7 @@
     var f = document.querySelector('[data-settings-form]');
     var s = state.settings;
     if (!f || !s) return;
-    var set = function (name, val) { if (f[name] !== undefined && val !== null && val !== undefined) f[name].value = val; };
+    var set = function (name, v) { var c = ctrl(f, name); if (c && v !== null && v !== undefined) c.value = v; };
     set('store_name', s.store_name);
     set('logo_url', s.logo_url);
     set('announcement_text', s.announcement_text);
@@ -828,27 +836,27 @@
     set('bank_name', bank.bank); set('bank_title', bank.title); set('bank_account', bank.account);
     var ep = s.easypaisa || {};
     set('easypaisa', ep.easypaisa); set('jazzcash', ep.jazzcash);
-    f.store_status.checked = s.store_status !== false;
-    f.cod_enabled.checked = s.cod_enabled !== false;
+    if (ctrl(f, 'store_status')) ctrl(f, 'store_status').checked = s.store_status !== false;
+    if (ctrl(f, 'cod_enabled')) ctrl(f, 'cod_enabled').checked = s.cod_enabled !== false;
   }
 
   document.querySelector('[data-settings-form]').addEventListener('submit', async function (e) {
     e.preventDefault();
     var f = e.target;
     var payload = {
-      store_status: f.store_status.checked,
-      store_name: f.store_name.value.trim(),
-      logo_url: f.logo_url.value.trim(),
-      announcement_text: f.announcement_text.value.trim(),
-      free_shipping_threshold: Number(f.free_shipping_threshold.value) || 3000,
-      shipping_fee: Number(f.shipping_fee.value) || 200,
-      whatsapp_number: f.whatsapp_number.value.replace(/[^0-9]/g, ''),
-      support_email: f.support_email.value.trim(),
-      business_address: f.business_address.value.trim(),
-      social_links: { instagram: f.instagram.value.trim(), facebook: f.facebook.value.trim(), tiktok: f.tiktok.value.trim(), youtube: f.youtube.value.trim() },
-      bank_details: { bank: f.bank_name.value.trim(), title: f.bank_title.value.trim(), account: f.bank_account.value.trim() },
-      easypaisa: { easypaisa: f.easypaisa.value.trim(), jazzcash: f.jazzcash.value.trim(), title: f.bank_title.value.trim() },
-      cod_enabled: f.cod_enabled.checked
+      store_status: checked(f, 'store_status'),
+      store_name: val(f, 'store_name').trim(),
+      logo_url: val(f, 'logo_url').trim(),
+      announcement_text: val(f, 'announcement_text').trim(),
+      free_shipping_threshold: Number(val(f, 'free_shipping_threshold')) || 3000,
+      shipping_fee: Number(val(f, 'shipping_fee')) || 200,
+      whatsapp_number: val(f, 'whatsapp_number').replace(/[^0-9]/g, ''),
+      support_email: val(f, 'support_email').trim(),
+      business_address: val(f, 'business_address').trim(),
+      social_links: { instagram: val(f, 'instagram').trim(), facebook: val(f, 'facebook').trim(), tiktok: val(f, 'tiktok').trim(), youtube: val(f, 'youtube').trim() },
+      bank_details: { bank: val(f, 'bank_name').trim(), title: val(f, 'bank_title').trim(), account: val(f, 'bank_account').trim() },
+      easypaisa: { easypaisa: val(f, 'easypaisa').trim(), jazzcash: val(f, 'jazzcash').trim(), title: val(f, 'bank_title').trim() },
+      cod_enabled: checked(f, 'cod_enabled')
     };
     var res;
     if (state.settings && state.settings.id) {
@@ -865,9 +873,10 @@
   document.querySelector('[data-password-form]').addEventListener('submit', async function (e) {
     e.preventDefault();
     var f = e.target;
-    if (f.password.value.length < 6) { SG.toast('Password must be at least 6 characters', 'error'); return; }
-    if (f.password.value !== f.confirm.value) { SG.toast('Passwords do not match', 'error'); return; }
-    var res = await sb.auth.updateUser({ password: f.password.value });
+    var pw = val(f, 'password');
+    if (pw.length < 6) { SG.toast('Password must be at least 6 characters', 'error'); return; }
+    if (pw !== val(f, 'confirm')) { SG.toast('Passwords do not match', 'error'); return; }
+    var res = await sb.auth.updateUser({ password: pw });
     if (res.error) { SG.toast('Could not update password: ' + res.error.message, 'error'); return; }
     f.reset();
     SG.toast('Password updated successfully', 'success');
@@ -933,7 +942,8 @@
     var h = rect.height || 200;
     canvas.width = w * dpr;
     canvas.height = h * dpr;
-    var ctx = canvas.getContext('2d');
+    var ctx = canvas.getContext && canvas.getContext('2d');
+    if (!ctx) return null; // canvas unsupported — skip chart instead of breaking the page
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
     return { ctx: ctx, w: w, h: h };
