@@ -273,7 +273,7 @@
                 <label class="switch"><input type="checkbox" name="store_status" checked> Store open (customers can order)</label>
                 <div class="form-grid two">
                   <div class="field"><label>Store Name</label><input name="store_name" value="Smart Ghar"></div>
-                  <div class="field"><label>Logo URL</label><input name="logo_url" value="/images/logo.png"></div>
+                  <div class="field"><label>Logo</label><input name="logo_url" value="/images/logo.png"></div>
                 </div>
                 <div class="field"><label>Announcement Bar Text</label><input name="announcement_text" value="🚚 Cash on Delivery All Over Pakistan 🇵🇰 | Free Shipping Above PKR 3,000"></div>
               </div>
@@ -367,8 +367,8 @@
           </div>
           <div class="field"><label>Short Description</label><textarea name="short_description" rows="2" maxlength="180"></textarea></div>
           <div class="field"><label>Full Description</label><textarea name="full_description" rows="4"></textarea></div>
-          <div class="field"><label>Main Image URL *</label><input name="image_url" required placeholder="/images/products/chopper.png or https://…"></div>
-          <div class="field"><label>Gallery URLs (comma separated)</label><input name="image_gallery" placeholder="/images/a.png, /images/b.png"></div>
+          <div class="field"><label>Main Image</label><input name="image_url" placeholder="/images/products/chopper.png or choose from gallery"></div>
+          <div class="field"><label>Gallery Photos</label><input name="image_gallery" placeholder="/images/a.png, /images/b.png"></div>
           <div class="field"><label>Key Features (one per line)</label><textarea name="key_features" rows="3"></textarea></div>
           <div class="field"><label>Tags</label>
             <div style="display:flex;gap:14px;flex-wrap:wrap">
@@ -404,7 +404,7 @@
               </select>
             </div>
           </div>
-          <div class="field"><label>Image URL</label><input name="image_url" placeholder="/images/products/cat-kitchen.png"></div>
+          <div class="field"><label>Category Image</label><input name="image_url" placeholder="/images/products/cat-kitchen.png"></div>
           <div class="field"><label>Description</label><textarea name="description" rows="2"></textarea></div>
           <label class="switch"><input type="checkbox" name="is_active" checked> Active</label>
         </div>
@@ -438,6 +438,7 @@
 
   <script src="/vendor/supabase.js"></script>
   <script src="/js/supabase-config.js"></script>
+  <script src="/js/admin-images.js"></script>
   <script src="/js/admin.js"></script>
 </body>
 </html>

@@ -46,7 +46,7 @@ Password: smart123
 
 - **Dashboard** — today's revenue/orders, pending count, month revenue, 7-day bar chart, category pie chart, monthly revenue line chart, top products, low-stock alerts, recent orders
 - **Orders** — search, status/city filters, CSV export, detail modal, status updates, call / WhatsApp the customer, delete
-- **Products** — full CRUD with image URL, gallery, key features, tags, featured toggle, active/draft, stock, auto discount %
+- **Products** — full CRUD with **photo upload straight from your phone gallery**, multi-photo gallery (add/remove), key features, tags, featured toggle, active/draft, stock, auto discount %
 - **Customers** — auto-built from orders, VIP tagging, order history, call & WhatsApp, CSV export
 - **Categories** — CRUD with icon, image, description, live product counts
 - **Coupons** — percentage / fixed / free-shipping, min order, max cap, validity dates, usage limits, active toggle
@@ -102,6 +102,7 @@ SmartGharPK/
 │   ├── store.js               # Products, shop filters, PDP, quick view
 │   ├── checkout.js            # Validation, coupons, place_order, success modal
 │   ├── track.js               # Order tracking timeline
+│   ├── admin-images.js        # Gallery picker: compress + upload to Supabase Storage
 │   └── admin.js               # Auth guard + full admin CRUD + charts
 ├── images/
 │   ├── logo.png               # Brand logo (navbar/footer/admin)
@@ -113,7 +114,7 @@ SmartGharPK/
 │   ├── fa/                    # Font Awesome 6 icon font + CSS
 │   └── fonts/                 # Poppins + Playfair Display woff2
 ├── supabase/
-│   ├── schema.sql             # Tables, triggers, RPCs, RLS policies
+│   ├── schema.sql             # Tables, triggers, RPCs, RLS policies, storage bucket
 │   └── seed.sql               # Categories, 15 products, coupons, settings, reviews
 ├── tools/                     # Helper scripts used to generate artwork & seed SQL
 ├── vercel.json                # Cache + security headers
@@ -152,7 +153,8 @@ All tables live in the `public` schema with **RLS enabled**.
 | Role | Access |
 |---|---|
 | `anon` | SELECT active products / categories / approved reviews / settings; INSERT reviews (unapproved); EXECUTE the 3 RPCs. **No** direct access to orders or customers. |
-| `authenticated` (admin) | Full access to all tables |
+| `authenticated` (admin) | Full access to all tables; upload / replace / delete images in the `product-images` bucket |
+| Storage | `product-images` bucket is public for reading (so the storefront can render photos); writing requires an admin session. 5 MB per file, images only — the panel compresses every photo to ≤1400 px before upload. |
 
 ---
 
@@ -265,6 +267,30 @@ If your deployment gets a **different** URL (or you attach a custom domain), upd
 - ✅ Admin auth guard redirects when signed out
 - ✅ All 10 pages load with zero JS syntax errors; no console errors on data-fetch failure (graceful fallbacks)
 - ✅ 320 px-wide layout: no horizontal scroll, all touch targets ≥ 44 px
+
+---
+
+## 🖼 Adding product photos (no URLs needed)
+
+Every image field in the admin panel is a **gallery picker**:
+
+| Where | Field |
+|---|---|
+| Products → Add / Edit | Main Image, Gallery Photos (multi-select) |
+| Categories → Add / Edit | Category Image |
+| Settings → Store settings | Logo |
+
+1. Tap **Choose from Gallery** → the phone's photo picker (or camera) opens.
+2. Pick one photo (or several for *Gallery Photos*).
+3. The panel **compresses** it to max 1400 px / ~200 KB, uploads it to the
+   `product-images` bucket and fills in the public URL automatically.
+4. The thumbnail appears instantly; use **×** to remove a gallery photo.
+
+A **URL** button stays available for power users (external links, `/images/...`
+paths). It is hidden by default so nobody has to type URLs on a phone.
+
+> Uploads need the `product-images` bucket + its 4 policies — already applied to
+> this project and included at the end of `supabase/schema.sql`.
 
 ---
 
