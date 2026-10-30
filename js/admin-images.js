@@ -109,10 +109,32 @@
     });
     if (res && res.error) throw new Error(friendly(res.error));
 
-    var pub = sb.storage.from(BUCKET).publicUrl(path);
-    var url = (pub && pub.data && pub.data.publicUrl) || '';
-    if (!url) throw new Error('Upload worked but the public URL could not be created.');
-    return url;
+    return publicUrlFor(sb, path);
+  }
+
+  /* ---------------- Public URL ----------------
+     supabase-js v2 exposes getPublicUrl(); older/patched builds exposed
+     publicUrl(). Try the real method first, then the legacy alias, then build
+     the URL from the client's project URL so an upload is never wasted.
+     ------------------------------------------------------------------ */
+  function publicUrlFor(sb, path) {
+    var bucket = sb.storage.from(BUCKET);
+    var res = null;
+
+    try {
+      if (typeof bucket.getPublicUrl === 'function') res = bucket.getPublicUrl(path);
+      else if (typeof bucket.publicUrl === 'function') res = bucket.publicUrl(path);
+    } catch (e) {
+      res = null;
+    }
+
+    var url = (res && res.data && res.data.publicUrl) || (res && res.publicUrl) || '';
+    if (url) return url;
+
+    // last resort: build it ourselves
+    var base = (sb && (sb.supabaseUrl || sb.url)) || '';
+    if (!base) throw new Error('Upload worked but the public URL could not be created.');
+    return String(base).replace(/\/+$/, '') + '/storage/v1/object/public/' + BUCKET + '/' + path;
   }
 
   /* ---------------- Widget ---------------- */
