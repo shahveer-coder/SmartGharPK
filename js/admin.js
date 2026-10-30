@@ -173,6 +173,8 @@
     if (!m) return;
     m.classList.add('is-open');
     document.body.style.overflow = 'hidden';
+    // keep the gallery previews in sync with the values written into the form
+    if (window.SGImages) window.SGImages.sync();
   }
   function closeModal(id) {
     var m = document.getElementById(id);
@@ -560,7 +562,8 @@
       is_featured: checked(f, 'is_featured'),
       is_active: checked(f, 'is_active')
     };
-    if (!payload.title || !payload.image_url) { SG.toast('Title and image URL are required', 'error'); return; }
+    if (!payload.title) { SG.toast('Product name is required', 'error'); return; }
+    if (!payload.image_url) { SG.toast('Please choose a product photo', 'error'); return; }
 
     var btn = f.querySelector('button[type="submit"]');
     btn.disabled = true;
@@ -838,6 +841,7 @@
     set('easypaisa', ep.easypaisa); set('jazzcash', ep.jazzcash);
     if (ctrl(f, 'store_status')) ctrl(f, 'store_status').checked = s.store_status !== false;
     if (ctrl(f, 'cod_enabled')) ctrl(f, 'cod_enabled').checked = s.cod_enabled !== false;
+    if (window.SGImages) window.SGImages.sync();
   }
 
   document.querySelector('[data-settings-form]').addEventListener('submit', async function (e) {

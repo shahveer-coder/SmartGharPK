@@ -185,3 +185,33 @@ table.data .row-actions{display:flex;gap:4px}
   .admin-burger{display:none!important}
   .chart-card canvas{height:240px}
 }
+
+/* ---------- Image picker (gallery upload) ---------- */
+.imgp{margin-top:8px}
+.imgp__preview{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.imgp__thumb{
+  position:relative;width:84px;height:84px;border-radius:10px;overflow:hidden;
+  border:1px solid var(--line);background:var(--cream);
+}
+.imgp__thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.imgp__x{
+  position:absolute;top:2px;right:2px;width:22px;height:22px;border-radius:50%;
+  background:rgba(15,23,42,.72);color:#fff;display:grid;place-items:center;font-size:.62rem;
+  transition:background var(--t),transform var(--t);
+}
+.imgp__x:hover{background:#dc2626;transform:scale(1.08)}
+.imgp__empty{
+  width:100%;min-height:76px;border:1.5px dashed var(--line);border-radius:10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  color:var(--muted);font-size:.72rem;background:#fbfcfb;padding:12px;
+}
+.imgp__empty i{font-size:1.1rem;opacity:.6}
+.imgp__actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.imgp__actions .btn{min-height:38px}
+.imgp__actions .btn.is-active{border-color:var(--green);color:var(--green-700);background:rgba(34,197,94,.08)}
+.imgp__url{display:none;margin-top:8px;font-size:.78rem;color:var(--muted)}
+.imgp__url.imgp__url--open{display:block}
+.spinner--sm{width:13px;height:13px;border-width:2px}
+@media (min-width:768px){
+  .imgp__thumb{width:96px;height:96px}
+}

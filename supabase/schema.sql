@@ -186,16 +186,34 @@ create table if not exists public.settings (
 
 -- ---------- CATEGORY PRODUCT COUNTS ----------
 create or replace function public.refresh_category_counts()
-returns trigger language plpgsql as $$
+returns trigger language plpgsql security definer set search_path = public as $$
 begin
+  -- Supabase preloads pg_safeupdate for the authenticator role: every UPDATE
+  -- needs a WHERE clause. Only the affected category is refreshed here, and
+  -- the trigger is per-row so NEW/OLD identify that category.
+  if tg_op = 'DELETE' then
+    update public.categories c
+       set product_count = (select count(*) from public.products p where p.category = c.name and p.is_active)
+     where c.name = old.category;
+    return null;
+  end if;
+
   update public.categories c
-  set product_count = (select count(*) from public.products p where p.category = c.name and p.is_active);
+     set product_count = (select count(*) from public.products p where p.category = c.name and p.is_active)
+   where c.name = new.category;
+
+  if tg_op = 'UPDATE' and old.category is distinct from new.category then
+    update public.categories c
+       set product_count = (select count(*) from public.products p where p.category = c.name and p.is_active)
+     where c.name = old.category;
+  end if;
+
   return null;
 end; $$;
 
 drop trigger if exists trg_products_counts on public.products;
 create trigger trg_products_counts after insert or update or delete on public.products
-for each statement execute function public.refresh_category_counts();
+for each row execute function public.refresh_category_counts();
 
 -- trigger on categories insert to fill count
 create or replace function public.category_after_insert()
@@ -222,6 +240,7 @@ declare
   v_phone text;
   v_items jsonb;
   v_subtotal numeric;
+  v_item jsonb;
 begin
   v_phone := regexp_replace(coalesce(payload->>'phone',''), '[^0-9+]', '', 'g');
   if length(v_phone) < 10 then raise exception 'Invalid phone number'; end if;
@@ -260,25 +279,37 @@ begin
     where upper(code) = v_order.coupon_code;
   end if;
 
-  -- customer upsert
-  insert into public.customers (name, phone, email, address, city, province, total_orders, total_spent, last_order_at)
-  values (v_order.customer_name, v_phone, v_order.email, v_order.address, v_order.city, v_order.province, 1, v_order.total_amount, now())
-  on conflict (phone) do update set
-    name = excluded.name,
-    email = coalesce(excluded.email, public.customers.email),
-    address = excluded.address,
-    city = excluded.city,
-    province = excluded.province,
-    total_orders = public.customers.total_orders + 1,
-    total_spent = public.customers.total_spent + excluded.total_spent,
-    last_order_at = now(),
-    is_vip = (public.customers.total_orders + 1) >= 5;
+  -- customer upsert. Written as UPDATE (with WHERE) + INSERT instead of
+  -- INSERT ... ON CONFLICT DO UPDATE, which pg_safeupdate rejects as an
+  -- unfiltered UPDATE on Supabase.
+  update public.customers c
+     set name = v_order.customer_name,
+         email = coalesce(v_order.email, c.email),
+         address = v_order.address,
+         city = v_order.city,
+         province = v_order.province,
+         total_orders = coalesce(c.total_orders, 0) + 1,
+         total_spent = coalesce(c.total_spent, 0) + v_order.total_amount,
+         last_order_at = now(),
+         is_vip = (coalesce(c.total_orders, 0) + 1) >= 5
+   where c.phone = v_phone;
 
-  -- stock decrement
-  update public.products p
-  set stock_quantity = greatest(0, p.stock_quantity - (item->>'quantity')::int)
-  from jsonb_array_elements(v_items) as item
-  where p.id::text = item->>'product_id';
+  if not found then
+    insert into public.customers (name, phone, email, address, city, province, total_orders, total_spent, last_order_at)
+    values (v_order.customer_name, v_phone, v_order.email, v_order.address, v_order.city, v_order.province, 1, v_order.total_amount, now());
+  end if;
+
+  -- stock decrement, one row at a time. 'UPDATE ... FROM jsonb_array_elements'
+  -- and 'id::text = ...' are both rejected by pg_safeupdate as unfiltered.
+  for v_item in select * from jsonb_array_elements(v_items) loop
+    begin
+      update public.products
+         set stock_quantity = greatest(0, stock_quantity - coalesce((v_item->>'quantity')::int, 0))
+       where id = nullif(v_item->>'product_id', '')::uuid;
+    exception when invalid_text_representation then
+      null;
+    end;
+  end loop;
 
   return jsonb_build_object('order_id', v_order.id, 'order_number', v_order.order_number, 'total_amount', v_order.total_amount, 'status', v_order.status);
 end; $$;
@@ -406,3 +437,37 @@ create policy orders_admin_all on public.orders for all to authenticated using (
 
 drop policy if exists customers_admin_all on public.customers;
 create policy customers_admin_all on public.customers for all to authenticated using (true) with check (true);
+
+-- ============================================================
+-- STORAGE — product images (admin panel "Choose from Gallery")
+-- ============================================================
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values (
+  'product-images', 'product-images', true, 5242880,
+  array['image/png','image/jpeg','image/jpg','image/webp','image/gif','image/avif']
+)
+on conflict (id) do update
+  set public = true,
+      file_size_limit = 5242880,
+      allowed_mime_types = array['image/png','image/jpeg','image/jpg','image/webp','image/gif','image/avif'];
+
+drop policy if exists "product_images_public_read" on storage.objects;
+create policy "product_images_public_read" on storage.objects
+  for select to anon, authenticated
+  using (bucket_id = 'product-images');
+
+drop policy if exists "product_images_admin_insert" on storage.objects;
+create policy "product_images_admin_insert" on storage.objects
+  for insert to authenticated
+  with check (bucket_id = 'product-images');
+
+drop policy if exists "product_images_admin_update" on storage.objects;
+create policy "product_images_admin_update" on storage.objects
+  for update to authenticated
+  using (bucket_id = 'product-images')
+  with check (bucket_id = 'product-images');
+
+drop policy if exists "product_images_admin_delete" on storage.objects;
+create policy "product_images_admin_delete" on storage.objects
+  for delete to authenticated
+  using (bucket_id = 'product-images');
