@@ -16,7 +16,14 @@
 .auth-card{
   position:relative;width:100%;max-width:420px;background:#fff;border-radius:24px;padding:32px 26px;
   box-shadow:0 40px 80px -40px rgba(0,0,0,.6);
+  /* pure-CSS entrance: never depends on AOS/JS. If animations are disabled the
+     element simply renders in its final state (visible) — unlike data-aos, which
+     parks it at opacity:0 until JS reveals it. */
+  animation:scaleIn .5s var(--ease) both;
 }
+/* Safety net: any future AOS attribute on this page stays visible even if
+   AOS is not initialised (admin pages don't load js/main.js). */
+.auth-page [data-aos]{opacity:1;transform:none}
 .pass-wrap{position:relative}
 .pass-wrap input{padding-right:46px}
 .pass-toggle{
