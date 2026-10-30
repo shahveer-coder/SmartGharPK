@@ -1,0 +1,148 @@
+/* ==========================================================
+   SMART GHAR — Animations
+   Page load, scroll, hover, interactive micro-interactions
+   ========================================================== */
+
+/* ---------------- Keyframes ---------------- */
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes softBounce{0%,100%{transform:translateY(0)}35%{transform:translateY(-6px)}60%{transform:translateY(-2px)}}
+@keyframes badgePop{0%{transform:scale(.4)}55%{transform:scale(1.35)}100%{transform:scale(1)}}
+@keyframes badgeTilt{0%,100%{transform:rotate(-3deg) scale(1)}50%{transform:rotate(3deg) scale(1.06)}}
+@keyframes newFlash{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.7)}50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+@keyframes pulseRing{0%{transform:scale(1);opacity:.9}70%{transform:scale(1.55);opacity:0}100%{transform:scale(1.55);opacity:0}}
+@keyframes pulseSoft{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.35)}50%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
+@keyframes btnPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+@keyframes waGlow{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.45)}50%{box-shadow:0 0 0 12px rgba(34,197,94,0)}}
+@keyframes shimmer{100%{transform:translateX(100%)}}
+@keyframes toastIn{from{opacity:0;transform:translateX(105%)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(105%)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+@keyframes checkPop{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+@keyframes patternDrift{from{background-position:0 0,0 0}to{background-position:128px 96px,-168px 126px}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:scale(1)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ripple{to{transform:scale(3.2);opacity:0}}
+@keyframes cartBounce{0%,100%{transform:translateY(0) scale(1)}30%{transform:translateY(-9px) scale(1.12)}55%{transform:translateY(2px) scale(.98)}75%{transform:translateY(-3px) scale(1.04)}}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+
+/* ---------------- Page load ---------------- */
+.nav-slide{animation:slideDown .6s var(--ease) both}
+.logo-pop{animation:logoIn .85s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes logoIn{
+  0%{opacity:0;transform:scale(.6) translateY(-8px)}
+  60%{opacity:1;transform:scale(1.08) translateY(0)}
+  100%{opacity:1;transform:scale(1)}
+}
+.stagger>*{opacity:0;transform:translateY(24px);animation:fadeUp .7s var(--ease) forwards}
+.stagger>*:nth-child(1){animation-delay:.10s}
+.stagger>*:nth-child(2){animation-delay:.24s}
+.stagger>*:nth-child(3){animation-delay:.38s}
+.stagger>*:nth-child(4){animation-delay:.52s}
+.stagger>*:nth-child(5){animation-delay:.66s}
+.stagger>*:nth-child(6){animation-delay:.80s}
+.hero-visual{animation:scaleIn .95s .25s var(--ease) both}
+.float-slow{animation:bob 7s ease-in-out infinite}
+.float-slower{animation:bob 9s ease-in-out infinite .9s}
+.announce-slide{animation:slideDown .45s var(--ease) both}
+
+/* ---------------- Hover & micro-interactions ---------------- */
+.is-bouncing{animation:cartBounce .6s var(--ease)}
+.socials a{will-change:transform}
+
+/* ripple */
+.ripple-effect{
+  position:absolute;border-radius:50%;background:rgba(255,255,255,.55);transform:scale(0);
+  animation:ripple .65s var(--ease) forwards;pointer-events:none;
+}
+.btn--outline .ripple-effect,.btn--white .ripple-effect,.btn--ghost .ripple-effect{background:rgba(34,197,94,.28)}
+
+/* buy-now arrow slide */
+.arrow-slide i{transition:transform var(--t)}
+.arrow-slide:hover i{transform:translateX(6px)}
+
+/* img zoom lens hint */
+.gallery__main::after{
+  content:'\f00e';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;right:12px;bottom:12px;
+  width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.92);color:var(--forest);
+  display:grid;place-items:center;font-size:.8rem;opacity:0;transition:opacity var(--t);
+}
+.gallery__main:hover::after{opacity:1}
+
+/* link underline (generic) */
+.link-underline{position:relative;display:inline-block}
+.link-underline::after{
+  content:'';position:absolute;left:0;right:0;bottom:-2px;height:1.5px;background:currentColor;
+  transform:scaleX(0);transform-origin:left;transition:transform .32s var(--ease);
+}
+.link-underline:hover::after{transform:scaleX(1)}
+
+/* stagger helper for JS-rendered grids */
+.reveal-now{animation:fadeUp .6s var(--ease) both}
+
+/* skeleton pulse */
+.skeleton-pulse{animation:skeletonPulse 1.6s ease-in-out infinite}
+@keyframes skeletonPulse{0%,100%{opacity:1}50%{opacity:.55}}
+
+/* loading spinner */
+.spinner{
+  width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);
+  border-top-color:#fff;animation:spin .7s linear infinite;display:inline-block;
+}
+.spinner--green{border-color:rgba(34,197,94,.22);border-top-color:var(--green)}
+.page-loader{
+  position:fixed;inset:0;z-index:1200;background:#fff;display:grid;place-items:center;
+  transition:opacity .45s var(--ease),visibility .45s var(--ease);
+}
+.page-loader.is-done{opacity:0;visibility:hidden}
+.page-loader__spinner{
+  width:46px;height:46px;border-radius:50%;border:3px solid rgba(34,197,94,.18);border-top-color:var(--green);
+  animation:spin .8s linear infinite;
+}
+
+/* floating decorations */
+.deco-blob{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+
+/* AOS overrides for smoother easing */
+[data-aos]{transition-timing-function:cubic-bezier(.22,.61,.36,1)!important}
+[data-aos].aos-animate{will-change:transform,opacity}
+
+/* tooltip */
+.tip{position:relative}
+.tip::after{
+  content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(4px);
+  background:var(--forest);color:#fff;font-size:.68rem;padding:5px 9px;border-radius:6px;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity var(--t),transform var(--t);z-index:5;
+}
+.tip:hover::after{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* count-up shimmer highlight */
+.highlight-flash{animation:highlightFlash 1.2s var(--ease)}
+@keyframes highlightFlash{0%{background:rgba(132,204,22,.45)}100%{background:transparent}}
+
+/* marquee images / insta hover already in style.css */
+
+/* mobile menu links stagger */
+.mobile-menu.is-open .mobile-menu__links a{animation:fadeUp .45s var(--ease) both}
+.mobile-menu.is-open .mobile-menu__links a:nth-child(1){animation-delay:.05s}
+.mobile-menu.is-open .mobile-menu__links a:nth-child(2){animation-delay:.1s}
+.mobile-menu.is-open .mobile-menu__links a:nth-child(3){animation-delay:.15s}
+.mobile-menu.is-open .mobile-menu__links a:nth-child(4){animation-delay:.2s}
+.mobile-menu.is-open .mobile-menu__links a:nth-child(5){animation-delay:.25s}
+.mobile-menu.is-open .mobile-menu__links a:nth-child(6){animation-delay:.3s}
+.mobile-menu.is-open .mobile-menu__cta{animation:fadeUp .5s .32s var(--ease) both}
+
+/* dropdown */
+.dropdown-panel{animation:slideDown .26s var(--ease) both}
+
+/* stagger delays for product cards rendered by JS */
+.product-card{animation-fill-mode:both}
+
+/* reduced motion safety */
+@media (prefers-reduced-motion:reduce){
+  .stagger>*{animation:none;opacity:1;transform:none}
+  .hero-visual{animation:none}
+}

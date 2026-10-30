@@ -1,0 +1,22 @@
+# OS / editor files
+.DS_Store
+Thumbs.db
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencies / build output (project is static, no build step)
+node_modules/
+dist/
+build/
+
+# Environment / secrets (never commit real keys)
+.env
+.env.*
+!.env.example
+
+# Local tooling
+.venv/
+__pycache__/

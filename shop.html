@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop All Products — Smart Ghar | Kitchen &amp; Home Gadgets Pakistan</title>
+  <meta name="description" content="Browse all Smart Ghar kitchen and home gadgets. Filter by category, price, discount and rating. Cash on delivery all over Pakistan.">
+  <meta name="keywords" content="kitchen gadgets Pakistan, home appliances COD, online shopping Karachi, smart home products">
+  <meta name="theme-color" content="#14532d">
+  <meta property="og:title" content="Shop All Products — Smart Ghar">
+  <meta property="og:description" content="Premium kitchen and home gadgets with cash on delivery across Pakistan.">
+  <meta property="og:image" content="/images/logo.png">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <link rel="preload" href="/vendor/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/vendor/fa/css/all.min.css">
+  <link rel="stylesheet" href="/vendor/aos.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/animations.css">
+</head>
+<body>
+  <div class="page-loader"><div class="page-loader__spinner"></div></div>
+  <div class="scroll-progress"></div>
+
+  <div class="announce">
+    <div class="announce__track">
+      <span data-announce-text>🚚 Cash on Delivery All Over Pakistan 🇵🇰 | Free Shipping Above PKR 3,000</span>
+      <span>✨ 100% Original Products — 7 Day Easy Returns</span>
+      <span data-announce-text>🚚 Cash on Delivery All Over Pakistan 🇵🇰 | Free Shipping Above PKR 3,000</span>
+      <span>✨ 100% Original Products — 7 Day Easy Returns</span>
+    </div>
+    <button class="announce__close" aria-label="Close announcement" style="display:grid"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a class="brand" href="index.html" aria-label="Smart Ghar home">
+        <img class="logo-pop" src="/images/logo.png" alt="Smart Ghar logo" width="50" height="50">
+        <span class="brand__text"><b>SMART <span>GHAR</span></b><small>Kitchen &amp; Home Gadgets</small></span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="category.html?c=kitchen-gadgets">Categories</a>
+        <a href="about.html">About</a>
+        <a href="track-order.html">Track Order</a>
+      </nav>
+      <div class="header__actions">
+        <button class="icon-btn" data-open-search aria-label="Search products"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button class="icon-btn" data-open-cart aria-label="Open cart">
+          <i class="fa-solid fa-bag-shopping" data-cart-icon></i>
+          <span class="cart-badge is-empty" data-cart-count>0</span>
+        </button>
+        <a class="icon-btn icon-btn--wa" data-wa-link data-wa-text="Hi Smart Ghar! I need help with my order." aria-label="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        <button class="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__head">
+      <a class="brand" href="index.html">
+        <img src="/images/logo.png" alt="Smart Ghar" width="44" height="44">
+        <span class="brand__text"><b>SMART <span>GHAR</span></b><small>Kitchen &amp; Home Gadgets</small></span>
+      </a>
+      <button class="icon-btn" data-menu-close aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <nav class="mobile-menu__links">
+      <a href="index.html">Home <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="shop.html">Shop All <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="category.html?c=kitchen-gadgets">Categories <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="about.html">About Us <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="track-order.html">Track Order <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="checkout.html">Checkout <i class="fa-solid fa-arrow-right"></i></a>
+    </nav>
+    <div class="mobile-menu__cta">
+      <a class="btn btn--wa" data-wa-link data-wa-text="Hi Smart Ghar! I need help choosing a product."><i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp</a>
+      <a class="btn btn--outline" href="shop.html">Start Shopping</a>
+    </div>
+    <div class="mobile-menu__foot">
+      <p><i class="fa-solid fa-truck-fast"></i> Cash on Delivery all over Pakistan</p>
+      <p style="margin-top:6px"><i class="fa-solid fa-phone"></i> <span data-wa-display>+92 318 2158561</span></p>
+    </div>
+  </div>
+
+  <div class="search-overlay" role="dialog" aria-modal="true" aria-label="Search products">
+    <div class="search-overlay__box">
+      <form class="search-field" role="search">
+        <i class="fa-solid fa-magnifying-glass" style="color:var(--muted)"></i>
+        <input type="search" placeholder="Search for chopper, air fryer, lamp…" aria-label="Search products" autocomplete="off">
+        <button class="btn btn--primary btn--sm" type="submit">Search</button>
+      </form>
+      <div class="search-results"></div>
+    </div>
+  </div>
+
+  <main>
+    <div class="page-head">
+      <div class="container">
+        <nav class="breadcrumb"><a href="index.html">Home</a><i class="fa-solid fa-chevron-right"></i><span>Shop</span></nav>
+        <h1>All Products</h1>
+        <p>Smart gadgets for every corner of your home — delivered across Pakistan.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="container shop-layout">
+        <div class="filters__scrim" data-filters-close></div>
+
+        <aside class="filters" aria-label="Product filters">
+          <div class="filters__head">
+            <h3><i class="fa-solid fa-sliders" style="color:var(--green)"></i> Filters</h3>
+            <button class="icon-btn filters__close" data-filters-close aria-label="Close filters"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          <div class="field" style="margin-bottom:14px">
+            <label for="shopSearch">Search products</label>
+            <input id="shopSearch" type="search" placeholder="Search…" data-shop-search autocomplete="off">
+          </div>
+
+          <div class="filter-group">
+            <h4>Categories</h4>
+            <div data-cat-filters>
+              <div class="skeleton" style="height:16px;margin-bottom:10px"></div>
+              <div class="skeleton" style="height:16px;margin-bottom:10px"></div>
+              <div class="skeleton" style="height:16px"></div>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <h4>Price Range (PKR)</h4>
+            <div class="price-inputs">
+              <input type="number" min="0" step="100" value="0" data-price-min aria-label="Minimum price">
+              <span style="color:var(--muted)">–</span>
+              <input type="number" min="0" step="100" value="20000" data-price-max aria-label="Maximum price">
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <h4>Discount</h4>
+            <label class="check"><input type="checkbox" data-filter-discount value="10"> 10% or more</label>
+            <label class="check"><input type="checkbox" data-filter-discount value="20"> 20% or more</label>
+            <label class="check"><input type="checkbox" data-filter-discount value="30"> 30% or more</label>
+            <label class="check"><input type="checkbox" data-filter-discount value="50"> 50% or more</label>
+          </div>
+
+          <div class="filter-group">
+            <h4>Availability</h4>
+            <label class="check"><input type="checkbox" data-filter-stock value="in"> In Stock</label>
+            <label class="check"><input type="checkbox" data-filter-stock value="out"> Out of Stock</label>
+          </div>
+
+          <div class="filter-group">
+            <h4>Rating</h4>
+            <label class="check"><input type="checkbox" data-filter-rating value="5"> <span class="stars">★★★★★</span> 5 stars</label>
+            <label class="check"><input type="checkbox" data-filter-rating value="4"> <span class="stars">★★★★☆</span> 4 &amp; up</label>
+            <label class="check"><input type="checkbox" data-filter-rating value="3"> <span class="stars">★★★☆☆</span> 3 &amp; up</label>
+          </div>
+
+          <button class="btn btn--outline btn--block btn--sm" data-clear-filters style="margin-top:16px">
+            <i class="fa-solid fa-rotate-left"></i> Clear All Filters
+          </button>
+        </aside>
+
+        <div>
+          <div class="shop-toolbar">
+            <span class="count" data-result-count>Loading products…</span>
+            <button class="btn btn--outline btn--sm filters-toggle" data-filters-toggle>
+              <i class="fa-solid fa-sliders"></i> Filters
+            </button>
+            <div class="view-toggle">
+              <button class="is-active" data-view="grid" aria-label="Grid view"><i class="fa-solid fa-table-cells-large"></i></button>
+              <button data-view="list" aria-label="List view"><i class="fa-solid fa-list"></i></button>
+            </div>
+            <select class="select-mini" data-shop-sort aria-label="Sort products">
+              <option value="newest">Newest</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="best">Best Selling</option>
+              <option value="rating">Highest Rated</option>
+            </select>
+          </div>
+
+          <div class="product-grid product-grid--4" data-shop-grid></div>
+          <div class="pagination" data-pagination></div>
+        </div>
+      </div>
+    </div>
+
+    <section class="section section--cream section--tight">
+      <div class="container">
+        <div class="newsletter" data-aos="fade-up">
+          <h2>Need help choosing?</h2>
+          <p>Message us on WhatsApp and our team will recommend the right product for your home.</p>
+          <div class="center">
+            <a class="btn btn--wa btn--lg" data-wa-link data-wa-text="Hi Smart Ghar! Please help me choose a product."><i class="fa-brands fa-whatsapp"></i> Chat with us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <img src="/images/logo.png" alt="Smart Ghar" width="80" height="80" loading="lazy">
+          <p>Smart Ghar brings premium kitchen &amp; home gadgets to Pakistani homes — honest quality, fair prices and delivery you can rely on.</p>
+          <p class="footer__made" style="font-size:.8rem;color:#dcfce7;font-style:italic">Smart Home. Easy Life.</p>
+          <div class="socials">
+            <a href="https://instagram.com/smartghar.pk" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://facebook.com/smartghar.pk" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://tiktok.com/@smartghar.pk" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://youtube.com/@smartghar.pk" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html"><i class="fa-solid fa-chevron-right"></i> Home</a></li>
+            <li><a href="shop.html"><i class="fa-solid fa-chevron-right"></i> Shop All</a></li>
+            <li><a href="about.html"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
+            <li><a href="track-order.html"><i class="fa-solid fa-chevron-right"></i> Track Order</a></li>
+            <li><a data-wa-link data-wa-text="Hi Smart Ghar! I need help." href="#"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Categories</h4>
+          <ul>
+            <li><a href="category.html?c=kitchen-gadgets"><i class="fa-solid fa-chevron-right"></i> Kitchen Gadgets</a></li>
+            <li><a href="category.html?c=home-essentials"><i class="fa-solid fa-chevron-right"></i> Home Essentials</a></li>
+            <li><a href="category.html?c=storage-solutions"><i class="fa-solid fa-chevron-right"></i> Storage Solutions</a></li>
+            <li><a href="category.html?c=gift-items"><i class="fa-solid fa-chevron-right"></i> Gift Items</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Get In Touch</h4>
+          <ul class="footer__contact">
+            <li><i class="fa-solid fa-location-dot"></i><span>Karachi, Pakistan</span></li>
+            <li><i class="fa-brands fa-whatsapp"></i><a data-wa-link data-wa-text="Hi Smart Ghar! I need help." href="#"><span data-wa-display>+92 318 2158561</span></a></li>
+            <li><i class="fa-solid fa-envelope"></i><a href="mailto:info@smartghar.pk" data-store-email>info@smartghar.pk</a></li>
+            <li><i class="fa-solid fa-clock"></i><span>24/7 WhatsApp Support</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span data-year>2025</span> Smart Ghar. All Rights Reserved.</span>
+        <div class="pay-icons"><span>COD</span><span>EasyPaisa</span><span>JazzCash</span><span>Bank Transfer</span></div>
+      </div>
+    </div>
+  </footer>
+
+  <a class="wa-float" data-wa-link data-wa-text="Hi Smart Ghar! I need help with my order." aria-label="Chat on WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i><span class="wa-float__tip">Chat with us!</span>
+  </a>
+  <button class="to-top" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+  <nav class="bottom-nav" aria-label="Mobile quick navigation">
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="shop.html"><i class="fa-solid fa-bag-shopping"></i> Shop</a>
+    <a class="bn-wa" data-wa-link data-wa-text="Hi Smart Ghar! I need help." href="#"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+    <a data-open-cart href="#"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="cart-badge bn-badge is-empty" data-cart-count>0</span></a>
+    <a href="track-order.html"><i class="fa-solid fa-user"></i> Account</a>
+  </nav>
+
+  <script src="/vendor/supabase.js"></script>
+  <script src="/vendor/aos.js"></script>
+  <script src="/js/supabase-config.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/store.js"></script>
+</body>
+</html>
