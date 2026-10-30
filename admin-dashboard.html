@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Smart Ghar</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <link rel="preload" href="/vendor/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/vendor/fa/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/animations.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+  <div class="sidebar__scrim" data-sidebar-close></div>
+
+  <div class="admin-shell">
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar" id="adminSidebar">
+      <div class="sidebar__brand">
+        <img src="/images/logo.png" alt="Smart Ghar">
+        <div><b>SMART <span>GHAR</span></b><small>Admin Panel</small></div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="#dashboard" data-nav="dashboard" class="is-active"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+        <a href="#orders" data-nav="orders"><i class="fa-solid fa-cart-shopping"></i> Orders <span class="pill" data-pill-orders>0</span></a>
+        <a href="#products" data-nav="products"><i class="fa-solid fa-box"></i> Products</a>
+        <a href="#customers" data-nav="customers"><i class="fa-solid fa-users"></i> Customers</a>
+        <a href="#categories" data-nav="categories"><i class="fa-solid fa-folder-tree"></i> Categories</a>
+        <a href="#coupons" data-nav="coupons"><i class="fa-solid fa-ticket"></i> Coupons</a>
+        <a href="#analytics" data-nav="analytics"><i class="fa-solid fa-chart-line"></i> Analytics</a>
+        <a href="#settings" data-nav="settings"><i class="fa-solid fa-gear"></i> Settings</a>
+        <a href="#" data-logout><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </nav>
+      <div class="sidebar__foot">
+        <div><i class="fa-solid fa-circle" style="color:var(--lime);font-size:.5rem"></i> Store live</div>
+        <div style="margin-top:6px"><a href="index.html" target="_blank" style="color:var(--lime)">View storefront <i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
+      </div>
+    </aside>
+
+    <!-- ============ MAIN ============ -->
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <button class="icon-btn admin-burger" data-sidebar-open aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+        <div>
+          <h1 data-page-title>Dashboard</h1>
+          <span class="sub" data-page-sub>Store overview</span>
+        </div>
+        <div class="admin-topbar__right">
+          <a class="icon-btn" href="index.html" target="_blank" title="View store"><i class="fa-solid fa-store"></i></a>
+          <button class="icon-btn" data-refresh title="Refresh data"><i class="fa-solid fa-rotate"></i></button>
+          <div class="admin-avatar" data-admin-email title="Admin">A</div>
+        </div>
+      </header>
+
+      <div class="admin-content">
+        <!-- ==================== DASHBOARD ==================== -->
+        <section class="admin-section is-active" data-section="dashboard">
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-card__top"><span class="stat-card__icon"><i class="fa-solid fa-sack-dollar"></i></span><span class="trend">Today</span></div>
+              <b data-stat="today-revenue">PKR 0</b><small>Today's Revenue</small>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__top"><span class="stat-card__icon"><i class="fa-solid fa-box-open"></i></span><span class="trend">Today</span></div>
+              <b data-stat="today-orders">0</b><small>Today's Orders</small>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__top"><span class="stat-card__icon" style="background:#fef3c7;color:#92400e"><i class="fa-solid fa-hourglass-half"></i></span></div>
+              <b data-stat="pending">0</b><small>Pending Orders</small>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__top"><span class="stat-card__icon" style="background:#dcfce7;color:#166534"><i class="fa-solid fa-arrow-trend-up"></i></span><span class="trend">30 days</span></div>
+              <b data-stat="month-revenue">PKR 0</b><small>This Month</small>
+            </div>
+          </div>
+
+          <div class="chart-grid">
+            <div class="panel">
+              <div class="panel__head"><h2><i class="fa-solid fa-chart-column" style="color:var(--green)"></i> Sales — last 7 days</h2></div>
+              <div class="panel__body chart-card"><canvas data-chart="bar7"></canvas></div>
+            </div>
+            <div class="panel">
+              <div class="panel__head"><h2><i class="fa-solid fa-chart-pie" style="color:var(--green)"></i> Orders by category</h2></div>
+              <div class="panel__body chart-card"><canvas data-chart="pieCat"></canvas></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel__head"><h2><i class="fa-solid fa-chart-line" style="color:var(--green)"></i> Monthly revenue trend</h2></div>
+            <div class="panel__body chart-card"><canvas data-chart="lineMonth" style="height:220px"></canvas></div>
+          </div>
+
+          <div class="chart-grid two">
+            <div class="panel">
+              <div class="panel__head"><h2><i class="fa-solid fa-fire" style="color:#f97316"></i> Top selling products</h2></div>
+              <div class="panel__body"><div class="quick-list" data-top-products></div></div>
+            </div>
+            <div class="panel">
+              <div class="panel__head"><h2><i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b"></i> Low stock alerts</h2></div>
+              <div class="panel__body"><div class="quick-list" data-low-stock></div></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel__head">
+              <h2><i class="fa-solid fa-clock-rotate-left" style="color:var(--green)"></i> Recent orders</h2>
+              <div class="actions"><button class="btn btn--outline btn--sm" data-goto="orders">View all</button></div>
+            </div>
+            <div class="table-scroll"><table class="data" data-recent-orders><tbody></tbody></table></div>
+          </div>
+        </section>
+
+        <!-- ==================== ORDERS ==================== -->
+        <section class="admin-section" data-section="orders">
+          <div class="admin-toolbar">
+            <input class="grow" type="search" placeholder="Search order #, name, phone…" data-order-search>
+            <select data-order-status>
+              <option value="">All statuses</option>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="packed">Packed</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <select data-order-city><option value="">All cities</option></select>
+            <button class="btn btn--outline btn--sm" data-export-orders><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+          </div>
+          <div class="panel">
+            <div class="panel__body" style="padding:0">
+              <div class="table-scroll"><table class="data" data-orders-table><tbody></tbody></table></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== PRODUCTS ==================== -->
+        <section class="admin-section" data-section="products">
+          <div class="admin-toolbar">
+            <button class="btn btn--primary btn--sm" data-add-product><i class="fa-solid fa-plus"></i> Add New Product</button>
+            <input class="grow" type="search" placeholder="Search products…" data-product-search>
+            <select data-product-cat><option value="">All categories</option></select>
+            <select data-product-stock>
+              <option value="">All stock</option>
+              <option value="in">In stock</option>
+              <option value="low">Low stock (&lt; 10)</option>
+              <option value="out">Out of stock</option>
+            </select>
+          </div>
+          <div class="panel">
+            <div class="panel__body" style="padding:0">
+              <div class="table-scroll"><table class="data" data-products-table><tbody></tbody></table></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== CUSTOMERS ==================== -->
+        <section class="admin-section" data-section="customers">
+          <div class="admin-toolbar">
+            <input class="grow" type="search" placeholder="Search name or phone…" data-customer-search>
+            <select data-customer-filter>
+              <option value="">All customers</option>
+              <option value="vip">VIP (5+ orders)</option>
+              <option value="new">New (last 30 days)</option>
+            </select>
+            <button class="btn btn--outline btn--sm" data-export-customers><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+          </div>
+          <div class="panel">
+            <div class="panel__body" style="padding:0">
+              <div class="table-scroll"><table class="data" data-customers-table><tbody></tbody></table></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== CATEGORIES ==================== -->
+        <section class="admin-section" data-section="categories">
+          <div class="admin-toolbar">
+            <button class="btn btn--primary btn--sm" data-add-category><i class="fa-solid fa-plus"></i> Add Category</button>
+          </div>
+          <div class="panel">
+            <div class="panel__body">
+              <div class="table-scroll"><table class="data" data-categories-table><tbody></tbody></table></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== COUPONS ==================== -->
+        <section class="admin-section" data-section="coupons">
+          <div class="panel">
+            <div class="panel__head"><h2><i class="fa-solid fa-ticket" style="color:var(--green)"></i> Create coupon</h2></div>
+            <div class="panel__body">
+              <form data-coupon-form>
+                <div class="form-grid two">
+                  <div class="field"><label>Code *</label><input name="code" required placeholder="SMART20" style="text-transform:uppercase"></div>
+                  <div class="field"><label>Discount Type *</label>
+                    <select name="discount_type" required>
+                      <option value="percentage">Percentage (%)</option>
+                      <option value="fixed">Fixed Amount (PKR)</option>
+                      <option value="free_shipping">Free Shipping</option>
+                    </select>
+                  </div>
+                  <div class="field"><label>Discount Value</label><input name="discount_value" type="number" min="0" step="1" value="20"></div>
+                  <div class="field"><label>Minimum Order (PKR)</label><input name="min_order_amount" type="number" min="0" step="50" value="1500"></div>
+                  <div class="field"><label>Max Discount Cap (PKR)</label><input name="max_discount_cap" type="number" min="0" step="50" placeholder="optional"></div>
+                  <div class="field"><label>Usage Limit (total)</label><input name="usage_limit" type="number" min="0" step="1" placeholder="optional"></div>
+                  <div class="field"><label>Valid From</label><input name="valid_from" type="date"></div>
+                  <div class="field"><label>Valid Till</label><input name="valid_till" type="date"></div>
+                </div>
+                <label class="switch"><input type="checkbox" name="is_active" checked> Coupon active</label>
+                <button class="btn btn--primary btn--sm" type="submit" style="margin-top:10px"><i class="fa-solid fa-plus"></i> Create Coupon</button>
+              </form>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel__body" style="padding:0">
+              <div class="table-scroll"><table class="data" data-coupons-table><tbody></tbody></table></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== ANALYTICS ==================== -->
+        <section class="admin-section" data-section="analytics">
+          <div class="admin-toolbar">
+            <select data-analytics-range>
+              <option value="7">Last 7 days</option>
+              <option value="30" selected>Last 30 days</option>
+              <option value="90">Last 3 months</option>
+              <option value="365">Last 1 year</option>
+            </select>
+          </div>
+          <div class="stat-grid">
+            <div class="stat-card"><span class="stat-card__icon"><i class="fa-solid fa-sack-dollar"></i></span><b data-an="revenue">PKR 0</b><small>Total Revenue</small></div>
+            <div class="stat-card"><span class="stat-card__icon"><i class="fa-solid fa-receipt"></i></span><b data-an="orders">0</b><small>Total Orders</small></div>
+            <div class="stat-card"><span class="stat-card__icon"><i class="fa-solid fa-calculator"></i></span><b data-an="aov">PKR 0</b><small>Average Order Value</small></div>
+            <div class="stat-card"><span class="stat-card__icon"><i class="fa-solid fa-percent"></i></span><b data-an="conversion">0%</b><small>Delivered Rate</small></div>
+          </div>
+
+          <div class="chart-grid two">
+            <div class="panel">
+              <div class="panel__head"><h2><i class="fa-solid fa-city" style="color:var(--green)"></i> Sales by city</h2></div>
+              <div class="panel__body chart-card"><canvas data-chart="pieCity"></canvas></div>
+            </div>
+            <div class="panel">
+              <div class="panel__head"><h2><i class="fa-solid fa-layer-group" style="color:var(--green)"></i> Sales by category</h2></div>
+              <div class="panel__body chart-card"><canvas data-chart="pieCat2"></canvas></div>
+            </div>
+          </div>
+
+          <div class="chart-grid two">
+            <div class="panel">
+              <div class="panel__head"><h2><i class="fa-solid fa-clock" style="color:var(--green)"></i> Peak order hours</h2></div>
+              <div class="panel__body chart-card"><canvas data-chart="barHours"></canvas></div>
+            </div>
+            <div class="panel">
+              <div class="panel__head"><h2><i class="fa-solid fa-user-plus" style="color:var(--green)"></i> New customers</h2></div>
+              <div class="panel__body chart-card"><canvas data-chart="lineCustomers"></canvas></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel__head"><h2><i class="fa-solid fa-trophy" style="color:#f59e0b"></i> Top selling products</h2></div>
+            <div class="panel__body"><div class="quick-list" data-top-products-full></div></div>
+          </div>
+        </section>
+
+        <!-- ==================== SETTINGS ==================== -->
+        <section class="admin-section" data-section="settings">
+          <form data-settings-form>
+            <div class="panel">
+              <div class="panel__head"><h2><i class="fa-solid fa-store" style="color:var(--green)"></i> Store settings</h2></div>
+              <div class="panel__body">
+                <label class="switch"><input type="checkbox" name="store_status" checked> Store open (customers can order)</label>
+                <div class="form-grid two">
+                  <div class="field"><label>Store Name</label><input name="store_name" value="Smart Ghar"></div>
+                  <div class="field"><label>Logo URL</label><input name="logo_url" value="/images/logo.png"></div>
+                </div>
+                <div class="field"><label>Announcement Bar Text</label><input name="announcement_text" value="🚚 Cash on Delivery All Over Pakistan 🇵🇰 | Free Shipping Above PKR 3,000"></div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel__head"><h2><i class="fa-solid fa-truck-fast" style="color:var(--green)"></i> Shipping</h2></div>
+              <div class="panel__body">
+                <div class="form-grid two">
+                  <div class="field"><label>Free Shipping Threshold (PKR)</label><input name="free_shipping_threshold" type="number" value="3000"></div>
+                  <div class="field"><label>Standard Shipping Fee (PKR)</label><input name="shipping_fee" type="number" value="200"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel__head"><h2><i class="fa-brands fa-whatsapp" style="color:var(--green)"></i> Contact &amp; social</h2></div>
+              <div class="panel__body">
+                <div class="form-grid two">
+                  <div class="field"><label>WhatsApp Number</label><input name="whatsapp_number" value="923182158561"></div>
+                  <div class="field"><label>Support Email</label><input name="support_email" value="info@smartghar.pk"></div>
+                </div>
+                <div class="field"><label>Business Address</label><input name="business_address" value="Karachi, Pakistan"></div>
+                <div class="form-grid two">
+                  <div class="field"><label>Instagram URL</label><input name="instagram" value="https://instagram.com/smartghar.pk"></div>
+                  <div class="field"><label>Facebook URL</label><input name="facebook" value="https://facebook.com/smartghar.pk"></div>
+                  <div class="field"><label>TikTok URL</label><input name="tiktok" value="https://tiktok.com/@smartghar.pk"></div>
+                  <div class="field"><label>YouTube URL</label><input name="youtube" value="https://youtube.com/@smartghar.pk"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel__head"><h2><i class="fa-solid fa-money-bill" style="color:var(--green)"></i> Payment details</h2></div>
+              <div class="panel__body">
+                <label class="switch"><input type="checkbox" name="cod_enabled" checked> Cash on Delivery enabled</label>
+                <div class="form-grid two">
+                  <div class="field"><label>Bank Name</label><input name="bank_name" placeholder="Meezan Bank"></div>
+                  <div class="field"><label>Account Title</label><input name="bank_title" placeholder="Smart Ghar"></div>
+                </div>
+                <div class="field"><label>Bank Account Number</label><input name="bank_account" placeholder="0000 0000 0000 0000"></div>
+                <div class="form-grid two">
+                  <div class="field"><label>EasyPaisa Number</label><input name="easypaisa" placeholder="0318 2158561"></div>
+                  <div class="field"><label>JazzCash Number</label><input name="jazzcash" placeholder="0318 2158561"></div>
+                </div>
+                <button class="btn btn--primary btn--sm" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Settings</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="panel">
+            <div class="panel__head"><h2><i class="fa-solid fa-user-shield" style="color:var(--green)"></i> Admin account</h2></div>
+            <div class="panel__body">
+              <p style="font-size:.82rem;color:var(--muted);margin-bottom:12px">Signed in as <b data-admin-emailtext></b></p>
+              <form data-password-form class="form-grid two">
+                <div class="field"><label>New Password</label><input type="password" name="password" minlength="6" required placeholder="At least 6 characters"></div>
+                <div class="field"><label>Confirm Password</label><input type="password" name="confirm" minlength="6" required></div>
+                <div><button class="btn btn--forest btn--sm" type="submit"><i class="fa-solid fa-key"></i> Update Password</button></div>
+              </form>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+  <div class="admin-modal" id="orderModal">
+    <div class="admin-modal__backdrop" data-modal-close></div>
+    <div class="admin-modal__card">
+      <div class="admin-modal__head"><h3>Order details</h3><button class="icon-btn" data-modal-close><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="admin-modal__body" data-order-detail></div>
+      <div class="admin-modal__foot" data-order-actions></div>
+    </div>
+  </div>
+
+  <div class="admin-modal" id="productModal">
+    <div class="admin-modal__backdrop" data-modal-close></div>
+    <div class="admin-modal__card">
+      <div class="admin-modal__head"><h3 data-product-modal-title>Add product</h3><button class="icon-btn" data-modal-close><i class="fa-solid fa-xmark"></i></button></div>
+      <form data-product-form>
+        <div class="admin-modal__body">
+          <div class="field"><label>Product Title *</label><input name="title" required></div>
+          <div class="form-grid two">
+            <div class="field"><label>Category *</label><select name="category" required data-category-select></select></div>
+            <div class="field"><label>Stock Quantity *</label><input name="stock_quantity" type="number" min="0" value="10" required></div>
+            <div class="field"><label>Original Price (PKR) *</label><input name="original_price" type="number" min="1" step="1" required></div>
+            <div class="field"><label>Sale Price (PKR)</label><input name="sale_price" type="number" min="0" step="1"></div>
+            <div class="field"><label>Rating (0–5)</label><input name="rating" type="number" min="0" max="5" step="0.1" value="4.5"></div>
+            <div class="field"><label>Review Count</label><input name="review_count" type="number" min="0" value="0"></div>
+          </div>
+          <div class="field"><label>Short Description</label><textarea name="short_description" rows="2" maxlength="180"></textarea></div>
+          <div class="field"><label>Full Description</label><textarea name="full_description" rows="4"></textarea></div>
+          <div class="field"><label>Main Image URL *</label><input name="image_url" required placeholder="/images/products/chopper.png or https://…"></div>
+          <div class="field"><label>Gallery URLs (comma separated)</label><input name="image_gallery" placeholder="/images/a.png, /images/b.png"></div>
+          <div class="field"><label>Key Features (one per line)</label><textarea name="key_features" rows="3"></textarea></div>
+          <div class="field"><label>Tags</label>
+            <div style="display:flex;gap:14px;flex-wrap:wrap">
+              <label class="check" style="padding:0"><input type="checkbox" name="tag_hot_deal" value="hot_deal"> Hot Deal</label>
+              <label class="check" style="padding:0"><input type="checkbox" name="tag_new" value="new"> New Arrival</label>
+              <label class="check" style="padding:0"><input type="checkbox" name="tag_best_seller" value="best_seller"> Best Seller</label>
+              <label class="check" style="padding:0"><input type="checkbox" name="tag_limited" value="limited"> Limited Stock</label>
+            </div>
+          </div>
+          <label class="switch"><input type="checkbox" name="is_featured"> Featured product</label>
+          <label class="switch"><input type="checkbox" name="is_active" checked> Active (visible in store)</label>
+        </div>
+        <div class="admin-modal__foot">
+          <button type="button" class="btn btn--ghost btn--sm" data-modal-close>Cancel</button>
+          <button type="submit" class="btn btn--primary btn--sm"><i class="fa-solid fa-floppy-disk"></i> Save Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="admin-modal" id="categoryModal">
+    <div class="admin-modal__backdrop" data-modal-close></div>
+    <div class="admin-modal__card" style="max-width:520px">
+      <div class="admin-modal__head"><h3 data-cat-modal-title>Add category</h3><button class="icon-btn" data-modal-close><i class="fa-solid fa-xmark"></i></button></div>
+      <form data-category-form>
+        <div class="admin-modal__body">
+          <div class="field"><label>Name *</label><input name="name" required></div>
+          <div class="form-grid two">
+            <div class="field"><label>Slug *</label><input name="slug" required placeholder="kitchen-gadgets"></div>
+            <div class="field"><label>Icon</label>
+              <select name="icon">
+                <option>🍳</option><option>🏠</option><option>📦</option><option>🎁</option><option>🛍️</option><option>🍽️</option><option>🧴</option><option>⌚</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label>Image URL</label><input name="image_url" placeholder="/images/products/cat-kitchen.png"></div>
+          <div class="field"><label>Description</label><textarea name="description" rows="2"></textarea></div>
+          <label class="switch"><input type="checkbox" name="is_active" checked> Active</label>
+        </div>
+        <div class="admin-modal__foot">
+          <button type="button" class="btn btn--ghost btn--sm" data-modal-close>Cancel</button>
+          <button type="submit" class="btn btn--primary btn--sm">Save Category</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="admin-modal" id="customerModal">
+    <div class="admin-modal__backdrop" data-modal-close></div>
+    <div class="admin-modal__card" style="max-width:600px">
+      <div class="admin-modal__head"><h3>Customer details</h3><button class="icon-btn" data-modal-close><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="admin-modal__body" data-customer-detail></div>
+    </div>
+  </div>
+
+  <div class="admin-modal" id="confirmModal">
+    <div class="admin-modal__backdrop" data-modal-close></div>
+    <div class="admin-modal__card" style="max-width:420px">
+      <div class="admin-modal__head"><h3>Please confirm</h3><button class="icon-btn" data-modal-close><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="admin-modal__body"><p data-confirm-text style="font-size:.88rem"></p></div>
+      <div class="admin-modal__foot">
+        <button class="btn btn--ghost btn--sm" data-modal-close>Cancel</button>
+        <button class="btn btn--primary btn--sm" data-confirm-yes>Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/vendor/supabase.js"></script>
+  <script src="/js/supabase-config.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — Smart Ghar</title>
+  <meta name="description" content="Smart Ghar admin panel login.">
+  <meta name="keywords" content="kitchen gadgets Pakistan, home appliances COD, online shopping Karachi, smart home products, kitchen tools PK">
+  <meta name="theme-color" content="#14532d">
+  <link rel="canonical" href="https://smart-ghar-pk.vercel.app/admin-login.html">
+  <meta property="og:title" content="Admin Login — Smart Ghar">
+  <meta property="og:description" content="Smart Ghar admin panel login.">
+  <meta property="og:image" content="/images/logo.png">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+  <link rel="preload" href="/vendor/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/vendor/fa/css/all.min.css">
+  <link rel="stylesheet" href="/vendor/aos.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/animations.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  
+</head>
+<body>
+  <div class="page-loader"><div class="page-loader__spinner"></div></div>
+  <div class="scroll-progress"></div>
+
+  <main class="auth-page">
+    <div class="auth-card" data-aos="zoom-in">
+      <a href="index.html" style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:18px">
+        <img src="/images/logo.png" alt="Smart Ghar" width="88" height="88" style="border-radius:50%">
+      </a>
+      <h1 style="font-size:1.5rem;text-align:center;margin-bottom:4px">Admin Panel Login</h1>
+      <p style="text-align:center;color:var(--muted);font-size:.86rem;margin-bottom:22px">Welcome back! Sign in to manage your store.</p>
+
+      <form data-admin-login novalidate>
+        <div class="field">
+          <label for="aEmail">Email Address</label>
+          <input id="aEmail" type="email" name="email" autocomplete="username" placeholder="admin@smartghar.pk" required>
+        </div>
+        <div class="field">
+          <label for="aPass">Password</label>
+          <div class="pass-wrap">
+            <input id="aPass" type="password" name="password" autocomplete="current-password" placeholder="••••••••" required>
+            <button type="button" class="pass-toggle" data-pass-toggle aria-label="Show password"><i class="fa-solid fa-eye"></i></button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;font-size:.82rem">
+          <label class="check" style="padding:0"><input type="checkbox" name="remember" checked> Remember me</label>
+          <a class="link-underline" href="#" style="color:var(--green-700);font-weight:600" data-forgot>Forgot password?</a>
+        </div>
+        <button class="btn btn--primary btn--block btn--lg" type="submit" data-login-btn>
+          <i class="fa-solid fa-lock"></i> Login
+        </button>
+        <p data-login-error style="display:none;color:#dc2626;font-size:.82rem;margin-top:12px;text-align:center"></p>
+      </form>
+
+      <p style="text-align:center;font-size:.72rem;color:var(--muted);margin-top:22px">Smart Ghar Admin © <span data-year>2025</span></p>
+    </div>
+  </main>
+  <script src="/vendor/supabase.js"></script>
+  <script src="/js/supabase-config.js"></script>
+  <script>
+    document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
+    var toggle = document.querySelector('[data-pass-toggle]');
+    toggle && toggle.addEventListener('click', function () {
+      var input = document.getElementById('aPass');
+      var show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      toggle.innerHTML = '<i class="fa-solid fa-eye' + (show ? '-slash' : '') + '"></i>';
+    });
+
+    var form = document.querySelector('[data-admin-login]');
+    var errEl = document.querySelector('[data-login-error]');
+    var btn = document.querySelector('[data-login-btn]');
+
+    // already signed in? go straight to dashboard
+    (async function () {
+      if (!window.SG || !SG.sb) return;
+      var s = await SG.sb.auth.getSession();
+      if (s && s.data && s.data.session) window.location.replace('admin-dashboard.html');
+    })();
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      errEl.style.display = 'none';
+      var email = form.email.value.trim();
+      var pass = form.password.value;
+      if (!email || !pass) { errEl.textContent = 'Please enter your email and password.'; errEl.style.display = 'block'; return; }
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Signing in…';
+      try {
+        var res = await SG.sb.auth.signInWithPassword({ email: email, password: pass });
+        if (res.error) throw res.error;
+        window.location.href = 'admin-dashboard.html';
+      } catch (err) {
+        errEl.textContent = (err && err.message) ? err.message : 'Login failed. Please check your credentials.';
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-lock"></i> Login';
+      }
+    });
+
+    document.querySelector('[data-forgot]').addEventListener('click', async function (e) {
+      e.preventDefault();
+      var email = form.email.value.trim();
+      if (!email) { errEl.textContent = 'Enter your admin email first, then click forgot password.'; errEl.style.display = 'block'; return; }
+      try {
+        await SG.sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/admin-login.html' });
+        SG.toast('Password reset link sent to ' + email, 'success');
+      } catch (err) {
+        SG.toast('Could not send reset email.', 'error');
+      }
+    });
+  </script>
+</body>
+</html>
