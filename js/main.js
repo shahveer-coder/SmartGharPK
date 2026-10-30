@@ -262,6 +262,15 @@
     });
   }
 
+  /* ---------------- Canonical for query-driven pages ---------------- */
+  function initCanonical() {
+    var page = location.pathname.split('/').pop();
+    if (page !== 'product-detail.html' && page !== 'category.html') return;
+    var link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = location.origin + location.pathname + location.search;
+  }
+
   /* ---------------- Boot ---------------- */
   function boot() {
     initMobileMenu();
@@ -274,6 +283,7 @@
     initCountdown();
     initWaLinks();
     initYear();
+    initCanonical();
     initAos();
     loadSettings();
   }
