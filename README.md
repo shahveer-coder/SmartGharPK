@@ -270,6 +270,25 @@ If your deployment gets a **different** URL (or you attach a custom domain), upd
 
 ---
 
+## ♻️ Cache busting (important)
+
+Static assets are versioned so a deploy is visible immediately:
+
+- Every page loads its own CSS/JS as `/css/style.css?v=20261030b`, etc.
+- `vercel.json` sends `public, max-age=0, must-revalidate` for `/css/*` and `/js/*`
+  (instant updates, still ETag-cheap) while `/vendor/*` stays `immutable` for a year.
+- `/images/*` is cached for 7 days — uploaded photos never change path, so that is safe.
+
+**When you edit `css/*` or `js/*`, bump the version** in `admin-dashboard.html`,
+`index.html` and the other pages (find & replace `?v=20261030b` → the new tag).
+Skipping this means browsers may keep the old file for a while.
+
+> `admin-dashboard.html` also carries a tiny inline shim that aliases
+> `storage.publicUrl()` to `getPublicUrl()` (supabase-js v2 renamed it), so a
+> browser stuck on an older cached script can still upload photos.
+
+---
+
 ## 🖼 Adding product photos (no URLs needed)
 
 Every image field in the admin panel is a **gallery picker**:
