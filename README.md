@@ -12,8 +12,8 @@ Built with plain **HTML5 + CSS3 + Vanilla JavaScript** (no frameworks, no build 
 
 | | |
 |---|---|
-| **Live store** | `https://smart-ghar-pk.vercel.app` *(after the 2-minute import in §3)* |
-| **Admin panel** | `https://smart-ghar-pk.vercel.app/admin-login.html` |
+| **Live store** | **https://smartgharpk.vercel.app** ✅ deployed |
+| **Admin panel** | `https://smartgharpk.vercel.app/admin-login.html` |
 | **GitHub repo** | https://github.com/shahveer-coder/SmartGharPK |
 | **Supabase project** | `gkyqzyehaszjqeiggflu` (region: ap-south-1) |
 
@@ -184,12 +184,10 @@ The frontend talks to Supabase using the **publishable/anon key**, which is safe
 
 ### 3. Deploy to Vercel (2 minutes, zero config)
 
-> **Status:** the code is pushed and ready. The Vercel project still has to be created —
-> the API token available to this workspace is **read-only**, so `vercel projects create`
-> is rejected with *“Access denied … token may not have the required permissions.”*
-> Nothing else is blocking: importing the repo takes about two minutes (Option A below).
-> If you would rather automate it, re-authorise the Vercel integration with a
-> **Full Account** token for the `shahveer-coder` team and the deploy can be triggered from here.
+> **Status: live** → **https://smartgharpk.vercel.app** (project imported from this repo,
+> Framework preset: *Other*, no build step, no output directory). Every push to `main`
+> redeploys automatically. The Supabase **Site URL** is already set to this domain, so
+> auth/password-reset redirects work out of the box.
 
 **Option A — Dashboard (recommended)**
 
@@ -209,7 +207,7 @@ vercel --prod
 **Option C — drag & drop**: zip the folder and drop it on Vercel → New Project → “Deploy from template/upload”.
 
 After deploying, set the production URL in **Supabase → Authentication → URL Configuration → Site URL** so password-reset emails point to your domain.
-This repo already ships with `https://smart-ghar-pk.vercel.app` configured as the Supabase Site URL
+This repo already ships with `https://smartgharpk.vercel.app` configured as the Supabase Site URL
 and in the redirect allow-list (`localhost:8080/3000` + `*.vercel.app` are allowed too).
 
 If your deployment gets a **different** URL (or you attach a custom domain), update it in three places:

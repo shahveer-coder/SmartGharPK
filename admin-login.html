@@ -10,8 +10,8 @@
   <meta name="theme-color" content="#14532d">
   <meta property="og:title" content="Admin Login — Smart Ghar">
   <meta property="og:description" content="Smart Ghar admin panel login.">
-  <meta property="og:image" content="https://smart-ghar-pk.vercel.app/images/logo.png">
-  <meta property="og:url" content="https://smart-ghar-pk.vercel.app/admin-login.html">
+  <meta property="og:image" content="https://smartgharpk.vercel.app/images/logo.png">
+  <meta property="og:url" content="https://smartgharpk.vercel.app/admin-login.html">
   <meta property="og:type" content="website">
   <link rel="icon" href="/images/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="/images/logo.png">
@@ -28,7 +28,7 @@
   <div class="scroll-progress"></div>
 
   <main class="auth-page">
-    <div class="auth-card" data-aos="zoom-in">
+    <div class="auth-card">
       <a href="index.html" style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:18px">
         <img src="/images/logo.png" alt="Smart Ghar" width="88" height="88" style="border-radius:50%">
       </a>
@@ -83,12 +83,16 @@
       if (s && s.data && s.data.session) window.location.replace('admin-dashboard.html');
     })();
 
+    var emailEl = form.querySelector('[name="email"]');
+    var passEl = form.querySelector('[name="password"]');
+
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
       errEl.style.display = 'none';
-      var email = form.email.value.trim();
-      var pass = form.password.value;
+      var email = emailEl.value.trim();
+      var pass = passEl.value;
       if (!email || !pass) { errEl.textContent = 'Please enter your email and password.'; errEl.style.display = 'block'; return; }
+      if (!window.SG || !SG.sb) { errEl.textContent = 'Connection problem — please refresh the page and try again.'; errEl.style.display = 'block'; return; }
       btn.disabled = true;
       btn.innerHTML = '<span class="spinner"></span> Signing in…';
       try {
@@ -105,8 +109,9 @@
 
     document.querySelector('[data-forgot]').addEventListener('click', async function (e) {
       e.preventDefault();
-      var email = form.email.value.trim();
+      var email = emailEl.value.trim();
       if (!email) { errEl.textContent = 'Enter your admin email first, then click forgot password.'; errEl.style.display = 'block'; return; }
+      if (!window.SG || !SG.sb) { errEl.textContent = 'Connection problem — please refresh the page.'; errEl.style.display = 'block'; return; }
       try {
         await SG.sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/admin-login.html' });
         SG.toast('Password reset link sent to ' + email, 'success');
