@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Update this base URL if you deploy to a custom domain -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>/shop.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>/category.html?c=kitchen-gadgets</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>/category.html?c=home-essentials</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>/category.html?c=storage-solutions</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>/category.html?c=gift-items</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>/about.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>/track-order.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://smart-ghar-pk.vercel.app/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://smart-ghar-pk.vercel.app/shop.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://smart-ghar-pk.vercel.app/category.html?c=kitchen-gadgets</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://smart-ghar-pk.vercel.app/category.html?c=home-essentials</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://smart-ghar-pk.vercel.app/category.html?c=storage-solutions</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://smart-ghar-pk.vercel.app/category.html?c=gift-items</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://smart-ghar-pk.vercel.app/about.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://smart-ghar-pk.vercel.app/track-order.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
 </urlset>

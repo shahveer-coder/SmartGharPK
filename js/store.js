@@ -798,11 +798,12 @@
       el.querySelector('[data-review-form]').addEventListener('submit', async function (e) {
         e.preventDefault();
         var f = e.target;
+        var q = function (n) { var c = f.querySelector('[name="' + n + '"]'); return c ? c.value : ''; };
         var payload = {
           product_id: product.id,
-          customer_name: f.name.value.trim().slice(0, 60),
-          rating: Number(f.rating.value),
-          review_text: f.text.value.trim().slice(0, 500),
+          customer_name: q('name').trim().slice(0, 60),
+          rating: Number(q('rating')),
+          review_text: q('text').trim().slice(0, 500),
           is_approved: false
         };
         if (!payload.customer_name || !payload.review_text) return;

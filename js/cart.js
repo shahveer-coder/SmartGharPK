@@ -256,6 +256,9 @@
     buildDrawer();
     renderBadge();
     renderDrawer();
+    // Announce the restored cart so views rendered during parsing (e.g. the
+    // checkout summary) can refresh with the real localStorage contents.
+    document.dispatchEvent(new CustomEvent('sg:cart-changed', { detail: { items: items } }));
 
     // global delegated add-to-cart
     document.addEventListener('click', function (e) {

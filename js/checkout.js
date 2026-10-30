@@ -126,6 +126,8 @@
   })();
 
   /* ---------------- Validation ---------------- */
+  function field(name) { return form.querySelector('[name="' + name + '"]'); }
+
   function markError(field, isError) {
     var wrap = field.closest('.field');
     if (wrap) wrap.classList.toggle('has-error', isError);
@@ -133,12 +135,12 @@
 
   function validate() {
     var ok = true;
-    var name = form.customer_name;
-    var phone = form.phone;
-    var email = form.email;
-    var address = form.address;
-    var city = form.city;
-    var province = form.province;
+    var name = field('customer_name');
+    var phone = field('phone');
+    var email = field('email');
+    var address = field('address');
+    var city = field('city');
+    var province = field('province');
 
     var nameOk = name.value.trim().length >= 3;
     markError(name, !nameOk); if (!nameOk) ok = false;
@@ -160,7 +162,7 @@
       var first = form.querySelector('.field.has-error input, .field.has-error select');
       if (first) {
         first.focus();
-        first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (first.scrollIntoView) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
       SG.toast('Please check the highlighted fields', 'error');
     }
@@ -187,14 +189,14 @@
     });
 
     var payload = {
-      customer_name: form.customer_name.value.trim(),
-      phone: form.phone.value.trim(),
-      email: form.email.value.trim(),
-      address: form.address.value.trim(),
-      city: form.city.value,
-      province: form.province.value,
-      postal_code: form.postal_code.value.trim(),
-      order_notes: form.order_notes.value.trim(),
+      customer_name: (field('customer_name') || {}).value ? field('customer_name').value.trim() : '',
+      phone: (field('phone') || {}).value ? field('phone').value.trim() : '',
+      email: (field('email') || {}).value ? field('email').value.trim() : '',
+      address: (field('address') || {}).value ? field('address').value.trim() : '',
+      city: (field('city') || {}).value || '',
+      province: (field('province') || {}).value || '',
+      postal_code: (field('postal_code') || {}).value ? field('postal_code').value.trim() : '',
+      order_notes: (field('order_notes') || {}).value ? field('order_notes').value.trim() : '',
       payment_method: (form.querySelector('input[name="payment_method"]:checked') || {}).value || 'COD',
       order_items: items,
       subtotal: summary.sub,
